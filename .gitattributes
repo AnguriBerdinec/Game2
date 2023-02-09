@@ -1,2 +1,54 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+numbers = list(range(1, 10))
+
+wins = [(1, 2, 3), (4, 5, 6), (7, 8, 9), (1, 4, 7), (2, 5, 8), (3, 6, 9), (1, 5, 9), (3, 5, 7)]
+
+
+def game_board():
+    for i in range(3):
+        print(numbers[0 + i * 3], numbers[1 + i * 3], numbers[2 + i * 3])
+
+
+def game_progress(token):
+    while True:
+        value = input("на какое поле поставить: " + token + "? ")
+        if not (value in '123456789'):
+            print("ошибка, введите корректное значение")
+            continue
+        value = int(value)
+        if str(numbers[value - 1]) in "XO":
+            print("поле уже занято, попробуйте ещё")
+            continue
+        numbers[value - 1] = token
+        break
+
+
+def check_win():
+    for check in wins:
+        if (numbers[check[0] - 1]) == (numbers[check[1] - 1]) == (numbers[check[2] - 1]):
+            return numbers[check[0] - 1]
+    else:
+        return False
+
+
+def main():
+    game_move = 0
+    while True:
+        game_board()
+        if game_move % 2 == 0:
+            game_progress('X')
+        else:
+            game_progress('O')
+        if game_move > 3:
+            winner = check_win()
+            if winner:
+                game_board()
+                print(winner, "победил")
+                break
+        game_move += 1
+        if game_move > 8:
+            game_board()
+            print("ничья")
+            break
+
+
+main()
